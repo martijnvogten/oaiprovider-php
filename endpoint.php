@@ -42,7 +42,9 @@ function handleRequest($params, Repository $repository, TokenStore $tokenstore=n
         }
         
         $metadata = $repository->getMetadata($p[P_METADATAPREFIX], $header->identifier);
-        xml\appendRecord($doc, $header, $metadata);
+        
+        $gr = xml\appendElement($doc, '', 'GetRecord');
+        xml\appendRecord($gr, $header, $metadata);
         break;
 
       case "ListIdentifiers":
