@@ -19,7 +19,8 @@ interface Repository {
   function getIdentifyData();
   
   /**
-   * Return available metadata formats for this repository in the following form:
+   * Return available metadata formats either for this repository or for the item 
+   * with provided identifier in the following form:
    * array(
    *     array(
    *         'metadataPrefix' => 'oai_dc',
@@ -33,8 +34,11 @@ interface Repository {
    *     ),
    * )
    * 
+   * @param $identifier optional parameter that specifies the identifier of
+   * the item
+   * 
    */
-  function getMetadataFormats();
+  function getMetadataFormats($identifier);
   
   /**
    * Return the sets of this repository in the following form:

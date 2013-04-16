@@ -29,7 +29,9 @@ class ExampleRepository implements Repository {
         'granularity' => 'YYYY-MM-DDThh:mm:ssZ');
   }
   
-  public function getMetadataFormats() {
+  public function getMetadataFormats($identifier = null) {
+  	// In this example every item supports both formats, so we can ignore
+  	// the parameter identifier.
     return array(
         array(
             'metadataPrefix' => 'oai_dc',
@@ -88,6 +90,10 @@ class ExampleRepository implements Repository {
   public function getHeader($identifier) {
     $row = DB::fetchRow("SELECT id, lastchanged, category, deleted FROM books WHERE id=" . DB::quote($identifier));
     
+    if ($row == null) {
+    	return null;
+    }
+    
     $header = new Header();
     $header->identifier = $row['id'];
     $header->datestamp = strtotime($row['lastchanged']);
@@ -135,9 +141,9 @@ class DB {
   
   static function fetchRow($sql) {
     foreach(self::query($sql) as $row) {
-      $rows[] = $row;
+      return $row;
     }
-    return $rows[0];
+    return null;
   }
   
   static function query($sql) {

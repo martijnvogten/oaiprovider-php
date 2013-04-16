@@ -109,8 +109,16 @@ function handleRequest($params, Repository $repository, TokenStore $tokenstore=n
         break;
 
       case "ListMetadataFormats":
-        assertParams($params, array(P_VERB));
-        _listMetadataFormats($doc, $repository->getMetadataFormats());
+        $p = assertParams($params, array(P_VERB), array(P_IDENTIFIER));
+        
+        if (@$p[P_IDENTIFIER]) {
+	        $header = $repository->getHeader($p[P_IDENTIFIER]);
+	        if ($header == null) {
+	        	throw new OAIException(ERR_ID_DOES_NOT_EXIST, '');
+	        }
+        }
+        
+        _listMetadataFormats($doc, $repository->getMetadataFormats(@$p[P_IDENTIFIER]));
         break;
 
       case "Identify":
