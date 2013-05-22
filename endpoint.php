@@ -158,7 +158,7 @@ function _listMetadataFormats($node, $formats) {
   $lmf = xml\appendElement($node, '', 'ListMetadataFormats');
   foreach($formats as $format) {
     $mf = xml\appendElement($lmf, '', 'metadataFormat');
-    xml\appendElement($mf, '', 'metadataFormat', $format['metadataPrefix']);
+    xml\appendElement($mf, '', 'metadataPrefix', $format['metadataPrefix']);
     xml\appendElement($mf, '', 'schema', $format['schema']);
     xml\appendElement($mf, '', 'metadataNamespace', $format['metadataNamespace']);
   }
