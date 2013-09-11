@@ -13,7 +13,7 @@ require_once 'tokens.php';
 
 const MAX_RESULTS = 100;
 
-function handleRequest($params, Repository $repository, TokenStore $tokenstore=null) {
+function handleRequest($params, Repository $repository, TokenStore $tokenstore=null, $path_to_xls = null) {
   
   if (!$tokenstore) {
     $tokenstore = new DatabaseTokenStore();
@@ -29,7 +29,7 @@ function handleRequest($params, Repository $repository, TokenStore $tokenstore=n
 
   try {
     
-    $doc = output\getBaseDocument($params);
+    $doc = output\getBaseDocument($params, $path_to_xls);
 
     switch($verb) {
       case "GetRecord":
