@@ -2,7 +2,8 @@
 
 namespace oaiprovider;
 
-use oaiprovider\tokens\DatabaseTokenStore;
+use oaiprovider\tokens\TokenStore;
+
 
 require_once 'constants.php';
 require_once 'output.php';
@@ -16,7 +17,7 @@ const MAX_RESULTS = 100;
 function handleRequest($params, Repository $repository, TokenStore $tokenstore=null, $path_to_xls = null) {
   
   if (!$tokenstore) {
-    $tokenstore = new DatabaseTokenStore();
+    throw new OAIException('No valid tokeStore object is supplied');
   }
   
   // check arguments
