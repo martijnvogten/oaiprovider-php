@@ -2,7 +2,8 @@
 
 namespace oaiprovider;
 
-use oaiprovider\tokens\DatabaseTokenStore;
+use oaiprovider\tokens\TokenStore;
+
 
 require_once 'constants.php';
 require_once 'output.php';
@@ -13,10 +14,10 @@ require_once 'tokens.php';
 
 const MAX_RESULTS = 100;
 
-function handleRequest($params, Repository $repository, TokenStore $tokenstore=null) {
+function handleRequest($params, Repository $repository, TokenStore $tokenstore=null, $path_to_xls = null) {
   
   if (!$tokenstore) {
-    $tokenstore = new DatabaseTokenStore();
+    throw new OAIException('No valid tokeStore object is supplied');
   }
   
   // check arguments
@@ -29,7 +30,7 @@ function handleRequest($params, Repository $repository, TokenStore $tokenstore=n
 
   try {
     
-    $doc = output\getBaseDocument($params);
+    $doc = output\getBaseDocument($params, $path_to_xls);
 
     switch($verb) {
       case "GetRecord":
@@ -93,10 +94,10 @@ function handleRequest($params, Repository $repository, TokenStore $tokenstore=n
         
         if ($hasmore) {
           $token = _createResumptionToken($p, $last_id);
-          $tokenstore->storeToken($token->token, serialize($token), $token->expirationDate);
+          $tokenstore->storeToken($token->token, serialize($token), $token->expirationdate);
           
           $rt = xml\appendElement($li, '', 'resumptionToken', $token->token);
-          $rt->setAttribute('expirationDate', output\datetime($token->expirationDate));
+          $rt->setAttribute('expirationdate', output\datetime($token->expirationdate));
         } else if ($was_resumption) {
           // Last set of incomplete lists should contain an empty resumptionToken.
           xml\appendElement($li, '', 'resumptionToken');
@@ -169,7 +170,7 @@ function _createResumptionToken($params, $last_id) {
   $rt->last_id = $last_id;
   $rt->params = $params;
   $rt->token = uniqid("rt");
-  $rt->expirationDate = strtotime("+1 days");
+  $rt->expirationdate = strtotime("+1 days");
   return $rt;
 }
 
@@ -190,6 +191,6 @@ class ResumptionToken {
   public $token;
   public $last_id;
   public $params;
-  public $expirationDate;
+  public $expirationdate;
 }
 

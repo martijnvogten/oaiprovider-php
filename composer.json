@@ -1,0 +1,26 @@
+{
+    "name": "oaiprovider-php/oaiprovider-php",
+    "type": "library",
+    "description": "OAI provider written in PHP",
+    "keywords": ["OAI"],
+    "homepage": "https://github.com/jbogdani/oaiprovider-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martijn Vogten",
+            "homepage": "https://github.com/martijnvogten",
+            "role": "Developer"
+        },
+        {
+          "name": "Julian Bogdani",
+          "homepage": "https://github.com/jbogdani",
+          "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0"
+    },
+    "autoload": {
+        "classmap": ["endpoint.php"]
+    }
+}

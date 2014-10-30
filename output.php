@@ -31,9 +31,14 @@ function _stripquery($uri) {
   return substr($uri, 0, strpos($uri, "?"));
 }
 
-function getBaseDocument($params) {
+function getBaseDocument($params, $path_to_xls = null) {
   $doc = new \DOMDocument('1.0', 'utf-8');
   $doc->formatOutput = true;
+  
+  if ($path_to_xls){
+  	$xslt = $doc->createProcessingInstruction('xml-stylesheet', 'type="text/xsl" href="' . $path_to_xls . '"');
+  	$doc->appendChild($xslt);
+  }
 
   $root = $doc->createElementNS("http://www.openarchives.org/OAI/2.0/", "OAI-PMH");
   $root->setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
