@@ -94,10 +94,10 @@ function handleRequest($params, Repository $repository, TokenStore $tokenstore=n
         
         if ($hasmore) {
           $token = _createResumptionToken($p, $last_id);
-          $tokenstore->storeToken($token->token, serialize($token), $token->expirationDate);
+          $tokenstore->storeToken($token->token, serialize($token), $token->expirationdate);
           
           $rt = xml\appendElement($li, '', 'resumptionToken', $token->token);
-          $rt->setAttribute('expirationDate', output\datetime($token->expirationDate));
+          $rt->setAttribute('expirationdate', output\datetime($token->expirationdate));
         } else if ($was_resumption) {
           // Last set of incomplete lists should contain an empty resumptionToken.
           xml\appendElement($li, '', 'resumptionToken');
@@ -170,7 +170,7 @@ function _createResumptionToken($params, $last_id) {
   $rt->last_id = $last_id;
   $rt->params = $params;
   $rt->token = uniqid("rt");
-  $rt->expirationDate = strtotime("+1 days");
+  $rt->expirationdate = strtotime("+1 days");
   return $rt;
 }
 
@@ -191,6 +191,6 @@ class ResumptionToken {
   public $token;
   public $last_id;
   public $params;
-  public $expirationDate;
+  public $expirationdate;
 }
 
