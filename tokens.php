@@ -2,7 +2,7 @@
 namespace oaiprovider\tokens;
 
 interface TokenStore {
-  function storeToken($token, $data, $expirationDate);
+  function storeToken($token, $data, $expirationdate);
   function fetchToken($token);
 }
 
@@ -12,23 +12,23 @@ class DatabaseTokenStore implements TokenStore {
       CREATE TABLE IF NOT EXISTS oai_resumptiontoken (
         `token` varchar(255) NOT NULL,
         `data` longtext NOT NULL,
-        `expirationDate` datetime NOT NULL,
+        `expirationdate` datetime NOT NULL,
         PRIMARY KEY (`token`)
       )
      ");
   }
   
-  function storeToken($token, $data, $expirationDate) {
+  function storeToken($token, $data, $expirationdate) {
     $this->assertTable();
     
     DB::query("
         INSERT INTO oai_resumptiontoken 
-          (token, data, expirationDate) 
+          (token, data, expirationdate) 
         VALUES
           (
             " . DB::quote($token) . ",
             " . DB::quote($data) . ",
-            " . DB::quote(date('Y-m-d H:i:s', $expirationDate)) . "
+            " . DB::quote(date('Y-m-d H:i:s', $expirationdate)) . "
           )
     ");
   }
